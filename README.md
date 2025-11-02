@@ -36,21 +36,29 @@ Pour configurer le moteur de recherche personnalisé :
 
 ## Utilisation
 
-```bash
-python price_checker.py "perceuse sans fil makita"
-```
+- Mode ponctuel :
+  ```bash
+  python price_checker.py "perceuse sans fil makita"
+  ```
+  Options utiles :
+  - `--per-store-results N` : nombre de résultats Google analysés par magasin (1 à 10, défaut 3).
 
-Options utiles :
+- Mode conversationnel :
+  ```bash
+  python price_chat.py
+  ```
+  Tapez ensuite le nom du produit directement dans le terminal (ex. `sac de ciment 25kg`).  
+  Commandes disponibles pendant la session :
+  - `set results N` : change le nombre de résultats Google analysés par magasin (1 à 10).
+  - `quit`, `exit` ou `Ctrl+D` : quitte le chat.
 
-- `--per-store-results N` : nombre de résultats Google analysés par magasin (1 à 10, défaut 3).
-
-Exemple de sortie :
+Exemple de sortie (mode script ou chat) :
 
 ```
 Résultats pour: perceuse sans fil makita
 =======================================
-- Leroy Merlin: 129,99 € 
-  Perceuse sans fil Makita - Leroy Merlin
+- Leroy Merlin: prix non détecté
+  Perceuse visseuse makita 18v au meilleur prix | Leroy Merlin
   https://www.leroymerlin.fr/...
 - Brico Dépôt: 129,00 € (page magasin)
   Perceuse visseuse à percussion + 74 accessoires - Makita
