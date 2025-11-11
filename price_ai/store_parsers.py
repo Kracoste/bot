@@ -6,7 +6,7 @@ from typing import Any, Iterable, Optional
 
 from bs4 import BeautifulSoup
 
-from price_parser import ParsedPrice
+from .price_parser import ParsedPrice
 
 
 def parse_price_from_html(

@@ -15,7 +15,7 @@ class Store:
 
 
 STORES: List[Store] = [
-    Store(name="Leroy Merlin", domain="leroymerlin.fr"),
+    Store(name="Point.P", domain="pointp.fr"),
     Store(name="Brico Dépôt", domain="bricodepot.fr"),
     Store(name="Castorama", domain="castorama.fr"),
 ]

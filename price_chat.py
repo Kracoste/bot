@@ -6,7 +6,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 
-from price_service import (
+from price_ai.price_service import (
     PriceLookupService,
     format_store_prices,
 )
@@ -16,7 +16,7 @@ def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Démarre un mode conversationnel pour demander des prix chez "
-            "Leroy Merlin, Brico Dépôt et Castorama."
+            "Point.P, Brico Dépôt et Castorama."
         )
     )
     parser.add_argument(

@@ -3,13 +3,13 @@ from __future__ import annotations
 import argparse
 from dotenv import load_dotenv
 
-from price_service import PriceLookupService, format_store_prices
+from price_ai.price_service import PriceLookupService, format_store_prices
 
 
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Recherche un produit dans les catalogues Leroy Merlin, Brico Dépôt et "
+            "Recherche un produit dans les catalogues Point.P, Brico Dépôt et "
             "Castorama via l'API Google Custom Search."
         )
     )
