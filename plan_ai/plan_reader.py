@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 try:
     import pdfplumber
@@ -19,33 +18,14 @@ except ImportError:  # pragma: no cover - optional dependency
 
 try:
     import pytesseract
+    from pytesseract import TesseractNotFoundError
 except ImportError:  # pragma: no cover - optional dependency
     pytesseract = None
+    TesseractNotFoundError = None
 
 from shared.utils import log_info, require_dependency
-
-
-MEASUREMENT_PATTERN = re.compile(
-    r"(?P<label>[A-Za-zÀ-ÿ0-9\s-]{3,})[:\-]?\s*"
-    r"(?:(?P<area>\d+(?:[.,]\d+)?)\s*(?:m²|m2))?"
-    r"(?:.*?(?P<length>\d+(?:[.,]\d+)?)\s*m)?",
-    flags=re.IGNORECASE,
-)
-
-
-@dataclass
-class PlanMeasurement:
-    label: str
-    area_m2: Optional[float] = None
-    length_m: Optional[float] = None
-    width_m: Optional[float] = None
-
-
-@dataclass
-class PlanAnalysis:
-    source: Path
-    measurements: List[PlanMeasurement]
-    raw_text: str
+from .dimension_parser import parse_measurements_from_text
+from .models import PlanAnalysis, PlanMeasurement
 
 
 class PlanReader:
@@ -61,7 +41,7 @@ class PlanReader:
 
         log_info(f"Lecture du plan: {file_path}")
         raw_text = self._extract_text(file_path)
-        measurements = self._parse_measurements(raw_text)
+        measurements = parse_measurements_from_text(raw_text)
         return PlanAnalysis(source=file_path, measurements=measurements, raw_text=raw_text)
 
     def _extract_text(self, file_path: Path) -> str:
@@ -84,34 +64,38 @@ class PlanReader:
 
     def _extract_image_text(self, file_path: Path) -> str:
         assert cv2 is not None and pytesseract is not None
+        try:
+            pytesseract.get_tesseract_version()
+        except (TesseractNotFoundError, OSError) as exc:  # type: ignore[arg-type]
+            raise RuntimeError(
+                "Tesseract OCR n'est pas installé ou introuvable dans le PATH. "
+                "Installez-le (macOS: brew install tesseract, Linux: sudo apt install tesseract-ocr)."
+            ) from exc
         image = cv2.imread(str(file_path))
         if image is None:
             raise RuntimeError(f"Impossible de lire l'image: {file_path}")
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (5, 5), sigmaX=0)
         _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        text = pytesseract.image_to_string(thresh, lang="fra")
+        target_lang = self._pick_language()
+        text = pytesseract.image_to_string(thresh, lang=target_lang)
         return text
 
-    def _parse_measurements(self, text: str) -> List[PlanMeasurement]:
-        measurements: List[PlanMeasurement] = []
-        for match in MEASUREMENT_PATTERN.finditer(text):
-            label = " ".join(match.group("label").split())
-            if not label:
-                continue
-
-            area = self._safe_float(match.group("area"))
-            length = self._safe_float(match.group("length"))
-            measurement = PlanMeasurement(label=label, area_m2=area, length_m=length)
-            measurements.append(measurement)
-
-        return measurements
-
     @staticmethod
-    def _safe_float(value: Optional[str]) -> Optional[float]:
-        if not value:
-            return None
+    def _pick_language() -> str:
+        """Use French OCR if available, otherwise fallback to English."""
         try:
-            return float(value.replace(",", "."))
-        except ValueError:
-            return None
+            languages = pytesseract.get_languages(config="")  # type: ignore[attr-defined]
+        except Exception:
+            languages = ["eng"]
+        if "fra" in languages:
+            return "fra"
+        if "eng" in languages:
+            return "eng"
+        raise RuntimeError(
+            "Aucun pack de langue Tesseract disponible. "
+            "Installez au moins 'tesseract-lang' (fra) ou gardez 'eng'."
+        )
+
+    def _parse_measurements(self, text: str) -> List[PlanMeasurement]:
+        return parse_measurements_from_text(text)

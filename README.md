@@ -13,7 +13,9 @@ L'entrée principale `main.py` orchestre l'analyse d'un plan puis interroge auto
 
 ```
 project-root/
-├── main.py                 # Orchestrateur plan + prix
+├── backend/                # API FastAPI (upload plans, requêtes prix)
+├── frontend/               # Mini CRM React + Tailwind
+├── main.py                 # Orchestrateur CLI plan + prix
 ├── price_ai/               # Modules de recherche de prix
 ├── plan_ai/                # Lecture de plans, OCR, calculs géométriques
 └── shared/                 # Utilitaires communs
@@ -43,7 +45,28 @@ GOOGLE_CSE_ID="votre_identifiant_cse"
 
 ## Utilisation
 
-### 1. Analyse complète (plan + prix)
+### 1. API SaaS (FastAPI)
+
+```bash
+source .venv/bin/activate
+uvicorn backend.app.main:app --reload
+```
+
+- POST `/plans` : upload d’un plan (`file`, `coverage`).
+- GET `/plans`, `/plans/{id}` : consultation.
+- POST `/plans/{id}/prices` : déclenche la recherche chez Point.P / Brico Dépôt / Castorama.
+
+### 2. Front CRM (React + Tailwind)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Le front communique avec `http://localhost:8000`. Pour un autre endpoint, définissez `VITE_API_URL`.
+
+### 3. Analyse CLI complète (plan + prix)
 
 ```bash
 python main.py plans/maison.pdf --show-table --coverage 1.4
@@ -53,7 +76,7 @@ python main.py plans/maison.pdf --show-table --coverage 1.4
 - Calcule une estimation de matériaux via `--coverage`
 - Déduit automatiquement une requête produit d'après la plus grande zone repérée (ou utilisez `--price-query "sac de ciment 25kg"`)
 
-### 2. IA prix uniquement
+### 4. IA prix uniquement
 
 - Script ponctuel :
   ```bash

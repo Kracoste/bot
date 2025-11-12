@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
-from .plan_reader import PlanMeasurement
+from .models import PlanMeasurement
 
 
 @dataclass
