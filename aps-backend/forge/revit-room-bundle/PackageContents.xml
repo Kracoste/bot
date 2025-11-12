@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="2025"
+                    Name="LBF Revit Rooms" Description="Export room metrics to JSON"
+                    AppVersion="1.0.0" ProductType="Application" >
+  <CompanyDetails Name="LBF" Url="https://example.com" Phone="N/A" Email="contact@example.com" />
+  <Components>
+    <Component Description="Room exporter" AppName="LBF.Revit.Rooms"
+               ModuleName="./Contents/Resources/LBF.Revit.Rooms.dll"
+               LoadOnAutoCADStartup="False">
+      <RevitAddIn AddInType="Command"
+                  Type="LBF.Revit.Rooms.RoomExporterApp"
+                  FullClassName="LBF.Revit.Rooms.RoomExporterApp"
+                  Assembly="./Contents/Resources/LBF.Revit.Rooms.dll"
+                  LoadOnRevitStartup="True" />
+    </Component>
+  </Components>
+</ApplicationPackage>

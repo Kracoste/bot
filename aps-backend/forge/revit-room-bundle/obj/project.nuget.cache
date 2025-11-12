@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZzHXR+dK+2c=",
+  "success": false,
+  "projectFilePath": "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Échec de la récupération des informations sur 'Autodesk.Revit.DesignAutomationFramework' à partir de la source distante 'https://dev-cdn.autodesk.io/artifactory/api/nuget/forge-design-automation/FindPackagesById()?id='Autodesk.Revit.DesignAutomationFramework'&semVerLevel=2.0.0'.\n  Response status code does not indicate success: 404 (Not Found).",
+      "projectPath": "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj",
+      "filePath": "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj",
+      "targetGraphs": []
+    }
+  ]
+}

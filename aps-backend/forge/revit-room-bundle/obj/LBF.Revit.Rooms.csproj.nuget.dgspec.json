@@ -1,0 +1,69 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj": {}
+  },
+  "projects": {
+    "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj",
+        "projectName": "LBF.Revit.Rooms",
+        "projectPath": "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/LBF.Revit.Rooms.csproj",
+        "packagesPath": "/Users/hugoallou/.nuget/packages/",
+        "outputPath": "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/hugoallou/BOT/aps-backend/forge/revit-room-bundle/NuGet.Config",
+          "/Users/hugoallou/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://dev-cdn.autodesk.io/artifactory/api/nuget/forge-design-automation": {}
+        },
+        "frameworks": {
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "dependencies": {
+            "Autodesk.Revit.DesignAutomationFramework": {
+              "target": "Package",
+              "version": "[1.0.6, )"
+            },
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.3, )",
+              "autoReferenced": true
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
