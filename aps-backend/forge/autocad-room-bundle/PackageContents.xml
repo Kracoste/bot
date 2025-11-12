@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="AutoCAD"
+                    ProductType="Application" Name="LBF Acad Rooms"
+                    Description="Extract ROOM polylines and export JSON" AppVersion="1.0.0">
+  <CompanyDetails Name="LBF" Url="https://example.com" Phone="N/A" Email="contact@example.com" />
+  <Components>
+    <Component Description="Room export command" AppName="LBF.Acad.Rooms"
+               ModuleName="./Contents/Resources/LBF.Acad.Rooms.dll"
+               LoadOnAutoCADStartup="True">
+      <Commands GroupName="LBFRooms">
+        <Command Local="LBF_EXPORT_ROOMS">LBF_EXPORT_ROOMS</Command>
+      </Commands>
+    </Component>
+  </Components>
+</ApplicationPackage>

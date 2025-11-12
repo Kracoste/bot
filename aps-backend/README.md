@@ -60,12 +60,29 @@ src/
 
 Cette structure facilite le remplacement futur par une base de données ou un stockage cloud (S3/OSS).
 
-### Étapes suivantes
+### Flux complet APS (actuel)
 
-1. **Bundles Autodesk** : développer/publier les bundles Revit & AutoCAD (`LBF-Revit-Rooms-v1`, `LBF-Acad-Rooms-v1`, etc.) puis remplacer `routeToPipeline`.
-2. **OSS intégration** : uploader les fichiers dans le bucket APS (`APS_BUCKET`) et stocker le `objectId`/`urn`.
-3. **Model Derivative IFC** : implémenter la requête `POST /modelderivative/v2/designdata/job` pour les fichiers IFC puis parser `properties`.
-4. **Vision + calibration** : ajouter un pipeline pour les plans raster (JPG/PNG/PDF image) lorsque les spécifications seront finalisées.
+1. **Upload** (`POST /api/plan/upload`) : le fichier est stocké localement (`uploads/`) et référencé dans `data/files.json`.
+2. **Process** (`POST /api/plan/process`) :
+   - Détection du type (RVT, DWG, PDF vectoriel…).
+   - Upload du fichier vers OSS (`APS_BUCKET`) avec une clé unique.
+   - Création de l’URN (pour consultation future) et passage en statut `processing`.
+   - Lancement asynchrone du job Design Automation via `runDesignAutomationJob` :
+     - Génère des URLs signées GET/PUT,
+     - Lance l’Activity (`LBF-Revit-Rooms-v1` ou `LBF-Acad-Rooms-v1`),
+     - Poll le WorkItem jusqu’à `success`,
+     - Télécharge `rooms.json` dans `data/jobs/job_<id>.json`,
+     - Marque le fichier `processed` ou `failed`.
+3. **Result** (`GET /api/plan/result?jobId=...`) : renvoie le JSON final si disponible, sinon un statut 202 pendant le traitement.
+
+### Étapes restantes
+
+1. **Publier réellement les bundles** (Revit & AutoCAD) avec les scripts `forge/scripts/publish_*.sh` pour que les activités soient opérationnelles.
+2. **Compléter la gestion des fichiers** :
+   - DWG/PDF : conversion PDF→DWG si nécessaire, pipeline multi-WorkItem.
+   - IFC : intégrer Model Derivative et parser les `IfcSpace`.
+   - Vision/scan : ajouter le pipeline OCR/calibration pour JPG/PNG/PDF image.
+3. **Améliorer la persistance** : remplacer `data/files.json` par une base (SQL ou autre) si besoin et sécuriser les jobs (webhooks, retries, etc.).
 
 ### Scripts / maintenance
 

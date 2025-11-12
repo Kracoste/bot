@@ -16,3 +16,7 @@ export async function saveBuffer(
   await fs.writeFile(targetPath, buffer);
   return targetPath;
 }
+
+export function getUploadsDir(): string {
+  return UPLOAD_DIR;
+}
